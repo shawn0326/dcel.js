@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset=utf-8>
+    <title>decl</title>
+    <script src="../src/decl.js"></script>
+    <script src="https://cdn.bootcss.com/dat-gui/0.7.2/dat.gui.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <style>
+        .info {
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="canvas" width="600" height="600"></canvas>
+    <div class="info"><text id="text">0</text></div>
+	<script>
+        var text = document.getElementById("text");
+
+        var canvas = document.getElementById("canvas");
+        var ctx = canvas.getContext("2d");
+        ctx.lineWidth = 4;
+
+        var width = canvas.width;
+        var height = canvas.height;
+
+        var resolution = [width, height];
+        var size = [8, 8];
+
+        function convertCoords(v) {
+            return [
+                Math.round( ( 1 / 2 + v[0] / (size[0] * 2) ) * resolution[0] ),
+                Math.round( ( 1 / 2 - v[1] / (size[1] * 2) ) * resolution[1] )
+            ]
+        }
+
+        function drawLines(points, edges) {
+
+            ctx.strokeStyle = 'rgb(0,0,0)';
+
+            for(var i = 0; i < edges.length; i++) {
+
+                var e = edges[i];
+                var p1 = convertCoords(points[e[0]]);
+                var p2 = convertCoords(points[e[1]]);
+                
+                ctx.beginPath();
+                ctx.moveTo(p1[0], p1[1]);
+                ctx.lineTo(p2[0], p2[1]);
+                ctx.closePath();
+                ctx.stroke();
+            }
+
+        }
+
+        function drawArea(areas) {
+            areas.forEach(function(f) {
+                var vertices = f.vertexlist();
+
+                var r = Math.floor(Math.random() * 200 + 50);
+                var g = Math.floor(Math.random() * 200 + 50);
+                var b = Math.floor(Math.random() * 200 + 50);
+
+                ctx.fillStyle = 'rgba(' + r + ',' + g + ',' + b + ', 0.5)';
+                ctx.beginPath();
+
+                for (var i = 0; i < vertices.length; i++) {
+                    var v = vertices[i];
+                    var p = convertCoords([v.x, v.y]);
+                    if (i == 0) {
+                        ctx.moveTo(p[0], p[1]);
+                    } else {
+                        ctx.lineTo(p[0], p[1]);
+                    }
+                }
+
+                ctx.closePath();
+                ctx.fill();
+            });
+        }
+
+        function consoleArea(areas) {
+            areas.forEach(function(f) {
+                var vertices = f.vertexlist();
+                console.log(vertices);
+            });
+        }
+
+        function fillData(points, edges) {
+            console.time("decl cost");
+            var decl = new DECL(points, edges);
+            var areas = decl.areas();
+            console.timeEnd("decl cost");
+            console.log(areas)
+
+            var holeCount = 0;
+            areas.forEach(function(f) {
+                if(f.area === 0) {
+                    holeCount++;
+                }
+            });
+
+            // console.clear();
+            // consoleArea(areas);
+
+            ctx.clearRect(0, 0, width, height);
+            drawArea(areas);
+            drawLines(points, edges);
+
+            text.innerText = "area count: " + areas.length + "\n fly wall count: " + holeCount + "\n area (>0) count: " + (areas.length - holeCount);
+        }
+
+        $.getJSON("./res/datas.json", function(datas) {
+
+            // random test
+            var data = {points: [], edges: []};
+            var _size = 60;
+            for(var i = 0; i < _size; i++) {
+                for(var j = 0; j < _size; j++) {
+                    var count = i * _size + j;
+                    var offsetX = (i - _size / 2) * 0.2;
+                    var offsetY = (j - _size / 2) * 0.2;
+                    data.points.push([offsetX, offsetY]);
+                }
+            }
+            for(var i = 0; i < data.points.length; i++) {
+                var row = Math.floor(i / _size);
+                var col = i % _size;
+                var center = i;
+                if (row > 0) {
+                    var _top = center - _size;
+                    Math.random() > 0.3 && data.edges.push([center, _top]);
+                }
+                if (col > 0) {
+                    var left = center - 1;
+                    Math.random() > 0.3 && data.edges.push([center, left]);
+                }
+            }
+            datas.push(data);
+
+            // presure test
+            var data = {points: [], edges: []};
+            var _size = 50;
+            for(var i = 0; i < _size; i++) {
+                for(var j = 0; j < _size; j++) {
+                    var count = i * _size + j;
+                    var offsetX = (i - _size / 2) * 0.3;
+                    var offsetY = (j - _size / 2) * 0.3;
+                    var scaler = 0.2;
+                    data.points.push([0 * scaler + offsetX, 1 * scaler + offsetY], [-0.5 * scaler + offsetX, 0 * scaler + offsetY], [0.5 * scaler + offsetX, 0 * scaler + offsetY]);
+                    data.edges.push([0 + count * 3, 1 + count * 3], [1 + count * 3, 2 + count * 3], [2 + count * 3, 0 + count * 3]);
+                }
+            }
+            datas.push(data);
+
+            var array = [];
+            for(var i = 0; i < datas.length; i++) {
+                array.push(i);
+            }
+
+            var gui = new dat.GUI();
+            gui.add({data: 0}, "data", array).onChange(function(val) {
+                fillData(datas[val].points, datas[val].edges);
+            });
+
+            fillData(datas[0].points, datas[0].edges);
+
+        });
+
+    </script>
+</body>
+
+</html>

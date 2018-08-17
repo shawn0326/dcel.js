@@ -1,5 +1,5 @@
 /**
- * EDCL.js
+ * EDCL.js (https://github.com/shawn0326/decl.js)
  * @author shawn0326 http://www.halflab.me/
  */
 

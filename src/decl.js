@@ -104,11 +104,38 @@
             return result;
         }
 
+        /**
+         * dispose
+         */
+        function dispose() {
+            for (var i = 0, l = vertices.length; i < l; i++) {
+                vertices[i].hedgelist.length = 0;
+            }
+
+            for (var i = 0, l = hedges.length; i < l; i++) {
+                var h = hedges[i];
+                h.origin = null;
+                h.twin = null;
+                h.face = null;
+                h.nexthedge = null;
+                h.prevhedge = null;
+            }
+
+            for (var i = 0, l = faces.length; i < l; i++) {
+                faces[i].wedge = null;
+            }
+
+            vertices.length = 0;
+            hedges.length = 0;
+            faces.length = 0;
+        }
+
         return {
             vertices: vertices,
             hedges: hedges,
             faces: faces,
-            areas: areas
+            areas: areas,
+            dispose: dispose
         };
 
     }

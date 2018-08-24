@@ -1,0 +1,30 @@
+{
+  "name": "dcel.js",
+  "version": "1.0.0",
+  "description": "dcel.js is a JavaScript implementation of Doubly connected edge list.",
+  "main": "index.js",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "build": "rollup -c",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://shawn0326@github.com/shawn0326/dcel.js.git"
+  },
+  "keywords": [
+    "dcel",
+    "javascript"
+  ],
+  "author": "shawn0326",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/shawn0326/dcel.js/issues"
+  },
+  "homepage": "https://github.com/shawn0326/dcel.js#readme",
+  "devDependencies": {
+    "rollup": "^0.64.1"
+  }
+}

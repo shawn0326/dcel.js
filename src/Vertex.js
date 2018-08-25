@@ -1,3 +1,4 @@
+// by this, internal face is ccw
 function sortByAngle(a, b) {
     return b.angle - a.angle;
 }

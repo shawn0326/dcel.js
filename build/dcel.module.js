@@ -618,7 +618,7 @@ Object.assign(DCEL.prototype, {
     },
 
     addEdge: function(x1, y1, x2, y2) {
-
+        // todo
     },
 
     removeEdge: function(x1, y1, x2, y2) {
@@ -674,8 +674,6 @@ Object.assign(DCEL.prototype, {
                 var h1 = hedge.origin.hedgelist[index - 1];
                 var h2 = hedge.origin.hedgelist[index % hedge.origin.hedgelist.length];
             }
-            h1.prevhedge = h2.twin;
-            h2.twin.nexthedge = h1;
             h2.prevhedge = h1.twin;
             h1.twin.nexthedge = h2;
         } else {
@@ -695,8 +693,6 @@ Object.assign(DCEL.prototype, {
                 var h1 = twinHedge.origin.hedgelist[index - 1];
                 var h2 = twinHedge.origin.hedgelist[index % twinHedge.origin.hedgelist.length];
             }
-            h1.prevhedge = h2.twin;
-            h2.twin.nexthedge = h1;
             h2.prevhedge = h1.twin;
             h1.twin.nexthedge = h2;
         } else {

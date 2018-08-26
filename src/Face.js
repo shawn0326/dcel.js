@@ -84,7 +84,7 @@ Object.defineProperties(Face.prototype, {
     external: {
         
         get: function() {
-            return this.area < 0;
+            return this.area <= 0;
         }
 
     },
@@ -208,25 +208,21 @@ Object.assign(Face.prototype, {
             return false;
         }
 
-        var start = list1[0];
-        var offset = -1;
-        for (var i = 0, l = list2.length; i < l; i++) {
-            if ( list2[i] === start ) {
-                offset = i;
-            }
-        }
+        var l = list1.length;
 
-        if (offset < 0) {
-            return false;
-        } else {
-            for (var i = 0, l = list1.length; i < l; i++) {
+        for (var offset = 0; offset < l; offset++) {
+            for (var i = 0; i < l; i++) {
                 if (list1[i] !== list2[(offset + i) % l]) {
-                    return false;
+                    break;
+                }
+                if ( i === (l - 1) ) {
+                    return true;
                 }
             }
         }
 
-        return true;
+        return false;
+
     },
 
     dirty: function() {

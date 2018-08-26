@@ -15,14 +15,13 @@ export default [{
         banner: BANNER
     }
 }, {
-    input: './index_umd.js',
+    input: './index.js',
 	plugins: [
 	],
 	// sourceMap: true,
 	output: {
-        input: './index.js',
-        format: 'es',
-        file: './build/dcel.module.js',
+        format: 'cjs',
+        file: './build/dcel.c.js',
         banner: BANNER
     }
 }];

@@ -3,8 +3,13 @@ dcel.js
 
 dcel.js is lightweight JavaScript implementation of [Doubly connected edge list](https://en.wikipedia.org/wiki/Doubly_connected_edge_list), inspired by [dcel(python)](https://github.com/anglyan/dcel).
 
-[demo1](https://shawn0326.github.io/dcel.js/examples/test1.html) ---- 
+[demo1](https://shawn0326.github.io/dcel.js/examples/test1.html) ----
 [demo2](https://shawn0326.github.io/dcel.js/examples/test2.html)
+
+### Extra Features ###
+
+* get internal face's holes.
+* edges modify.
 
 ### Usage ###
 
@@ -13,10 +18,31 @@ dcel.js is lightweight JavaScript implementation of [Doubly connected edge list]
 ````
 
 ````javascript
+
 // points [[x1, y1], [x2, y2], ...]
 // edges [[start1, end1], [start2, end2]...] starts and ends are indices of points
 var dcel = new dcel(points, edges);
-var areas = dcel.areas(); // return internal faces
+
+// return internal faces
+var faces = dcel.internalFaces();
+
+// get holes
+faces[0].holes
+
+// get area
+faces[0].area
+
+// get area except holes
+faces[0].areaExceptHoles
+
+// return external faces
+dcel.externalFaces();
+
+// edges modify
+decl.addEdge(x1, y1, x2, y2);
+decl.removeEdge(x1, y1, x2, y2);
+decl.splitEdge(x1, y1, x2, y2, splitX, splitY);
+
 ````
 
 ### About Me ###

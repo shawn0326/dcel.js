@@ -2,7 +2,12 @@
  * dcel.js (https://github.com/shawn0326/dcel.js)
  * @author shawn0326 http://www.halflab.me/
  */
+'use strict';
+
+Object.defineProperty(exports, '__esModule', { value: true });
+
 // by this, internal face is ccw
+// hedgelist is cw
 function sortByAngle(a, b) {
     return b.angle - a.angle;
 }
@@ -11,14 +16,16 @@ var counter = 0;
 
 /**
  * Vertex
- * @param {number} x 
+ * @param {number} x
  * @param {number} y 
  */
 function Vertex(x, y) {
+
     this.id = counter++;
     this.x = x;
     this.y = y;
     this.hedgelist = [];
+    
 }
 
 Object.assign(Vertex.prototype, {
@@ -295,7 +302,7 @@ Object.defineProperties(Face.prototype, {
     external: {
         
         get: function() {
-            return this.area < 0;
+            return this.area <= 0;
         }
 
     },
@@ -419,25 +426,21 @@ Object.assign(Face.prototype, {
             return false;
         }
 
-        var start = list1[0];
-        var offset = -1;
-        for (var i = 0, l = list2.length; i < l; i++) {
-            if ( list2[i] === start ) {
-                offset = i;
-            }
-        }
+        var l = list1.length;
 
-        if (offset < 0) {
-            return false;
-        } else {
-            for (var i = 0, l = list1.length; i < l; i++) {
+        for (var offset = 0; offset < l; offset++) {
+            for (var i = 0; i < l; i++) {
                 if (list1[i] !== list2[(offset + i) % l]) {
-                    return false;
+                    break;
+                }
+                if ( i === (l - 1) ) {
+                    return true;
                 }
             }
         }
 
-        return true;
+        return false;
+
     },
 
     dirty: function() {
@@ -544,14 +547,22 @@ Object.assign(DCEL.prototype, {
         }
     },
 
-    /**
-     * return internal faces and faces which area equals 0
-     */
-     areas: function() {
+    internalFaces: function() {
         var result = [], faces = this.faces;
         for (var i = 0, l = faces.length; i < l; i++) {
             var f = faces[i];
-            if (!f.external) {
+            if (f.internal) {
+                result.push(f);
+            }
+        }
+        return result;
+    },
+
+    externalFaces: function() {
+        var result = [], faces = this.faces;
+        for (var i = 0, l = faces.length; i < l; i++) {
+            var f = faces[i];
+            if (f.external) {
                 result.push(f);
             }
         }
@@ -618,7 +629,173 @@ Object.assign(DCEL.prototype, {
     },
 
     addEdge: function(x1, y1, x2, y2) {
-        // todo
+
+        var vertices = this.vertices;
+        var hedges = this.hedges;
+        var faces = this.faces;
+
+        var v1Created = false;
+        var v2Created = false;
+
+        var holesDirty = false;
+
+        // step 1: try add/find vertex
+
+        var v1 = this.findVertex(x1, y1);
+
+        if (!v1) {
+            v1 = new Vertex(x1, y1);
+            vertices.push(v1);
+            v1Created = true;
+        }
+
+        var v2 = this.findVertex(x2, y2);
+
+        if (!v2) {
+            v2 = new Vertex(x2, y2);
+            vertices.push(v2);
+            v2Created = true;
+        }
+
+        // step 2: add hedge
+
+        var h1 = new Hedge(v2, v1);
+        hedges.push(h1);
+        v1.hedgelist.push(h1);
+        v1.sortincident();
+
+        var h2 = new Hedge(v1, v2);
+        hedges.push(h2);
+        v2.hedgelist.push(h2);
+        v2.sortincident();
+
+        // step 3: link hedges
+
+        h1.twin = h2;
+        h2.twin = h1;
+
+        if (v1Created) {
+            h1.prevhedge = h2;
+            h2.nexthedge = h1;
+        } else {
+            var index = v1.hedgelist.indexOf(h1);
+            if (index === 0) {
+                var hprev = v1.hedgelist[v1.hedgelist.length - 1];
+                var hnext = v1.hedgelist[(index + 1) % v1.hedgelist.length];
+            } else {
+                var hprev = v1.hedgelist[index - 1];
+                var hnext = v1.hedgelist[(index + 1) % v1.hedgelist.length];
+            }
+            
+            h1.prevhedge = hprev.twin;
+            hprev.twin.nexthedge = h1;
+            h2.nexthedge = hnext;
+            hnext.prevhedge = h2;
+        }
+
+        if (v2Created) {
+            h2.prevhedge = h1;
+            h1.nexthedge = h2;
+        } else {
+            var index = v2.hedgelist.indexOf(h2);
+            if (index === 0) {
+                var hprev = v2.hedgelist[v2.hedgelist.length - 1];
+                var hnext = v2.hedgelist[(index + 1) % v2.hedgelist.length];
+            } else {
+                var hprev = v2.hedgelist[index - 1];
+                var hnext = v2.hedgelist[(index + 1) % v2.hedgelist.length];
+            }
+
+            h2.prevhedge = hprev.twin;
+            hprev.twin.nexthedge = h2;
+            h1.nexthedge = hnext;
+            hnext.prevhedge = h1;
+        }
+
+        // step 4: remove face
+
+        var head1 = h1.nexthedge;
+        var head2 = h2.nexthedge;
+
+        if (head1.face) {
+            var index = faces.indexOf(head1.face);
+            index > -1 && faces.splice(index, 1);
+            head1.face.dispose();
+            if (head1.face.area <= 0) {
+                holesDirty = true;
+            }
+        }
+
+        var index = faces.indexOf(head2.face);
+
+        if (head2.face) {
+            var index = faces.indexOf(head2.face);
+            index > -1 && faces.splice(index, 1);
+            head2.face.dispose();
+            if (head2.face.area <= 0) {
+                holesDirty = true;
+            }
+        }
+
+        // step 5: add new face
+
+        var face1 = new Face(this);
+        face1.wedge = head1;
+
+        var face2 = new Face(this);
+        face2.wedge = head2;
+
+        if( face1.equals(face2) ) { 
+            face2.dispose();
+            face2 = null;
+        }
+
+        // set hedge face
+
+        if ( face1 ) {
+
+            var h = face1.wedge;
+            h.face = face1;
+            // And we traverse the boundary of the new face
+            while (h.nexthedge !== face1.wedge) {
+                h = h.nexthedge;
+                h.face = face1;
+            }
+
+            if (face1.area <= 0) {
+                holesDirty = true;
+            }
+
+            faces.push(face1);
+        }
+
+        if ( face2 ) {
+
+            var h = face2.wedge;
+            h.face = face2;
+            // And we traverse the boundary of the new face
+            while (h.nexthedge !== face2.wedge) {
+                h = h.nexthedge;
+                h.face = face2;
+            }
+
+            if (face2.area <= 0) {
+                holesDirty = true;
+            }
+
+            faces.push(face2);
+        }
+
+        // step 6: mark hole dirty
+
+        if ( holesDirty ) {
+            
+            for (var i = 0, l = faces.length; i < l; i++) {
+                faces[i]._holesDirty = true;
+            }
+
+        }
+
     },
 
     removeEdge: function(x1, y1, x2, y2) {
@@ -630,7 +807,7 @@ Object.assign(DCEL.prototype, {
         var hedge = this.findHedge(x1, y1, x2, y2);
 
         if (!hedge) {
-            console.warn("splitEdge: found no hedge to split!", x1, y1, x2, y2);
+            console.warn("removeEdge: found no hedge to split!", x1, y1, x2, y2);
         }
 
         var twinHedge = hedge.twin;
@@ -640,6 +817,7 @@ Object.assign(DCEL.prototype, {
         var head2 = twinHedge.nexthedge;
         var useHead1 = true;
         var useHead2 = true;
+        var holesDirty = false;
 
         // step 1: remove hedge from hedges
 
@@ -655,10 +833,16 @@ Object.assign(DCEL.prototype, {
         var index = faces.indexOf(hedge.face);
         index > -1 && faces.splice(index, 1);
         hedge.face.dispose();
+        if (hedge.face.area <= 0) {
+            holesDirty = true;
+        }
 
         var index = faces.indexOf(twinHedge.face);
         index > -1 && faces.splice(index, 1);
         twinHedge.face.dispose();
+        if (twinHedge.face.area <= 0) {
+            holesDirty = true;
+        }
 
         // step 3: remove hedge from vertex.hedgelist
         // if vertex.hedgelist.length === 0 remove the vertex
@@ -736,6 +920,10 @@ Object.assign(DCEL.prototype, {
                 h.face = face1;
             }
 
+            if (face1.area <= 0) {
+                holesDirty = true;
+            }
+
             faces.push(face1);
         }
 
@@ -749,21 +937,21 @@ Object.assign(DCEL.prototype, {
                 h.face = face2;
             }
 
+            if (face2.area <= 0) {
+                holesDirty = true;
+            }
+
             faces.push(face2);
         }
 
         // step 5: mark hole dirty
 
-        if ( (face1 && face1.area <= 0) && (face2 && face2.area <= 0) ) {
-            // two external face
+        if ( holesDirty ) {
+            
             for (var i = 0, l = faces.length; i < l; i++) {
                 faces[i]._holesDirty = true;
             }
-        } else if ( (face1 && face1.area <= 0 && !face2) || (face2 && face2.area <= 0 && !face1) ) {
-            // one external face
-            for (var i = 0, l = faces.length; i < l; i++) {
-                faces[i]._holesDirty = true;
-            }
+
         }
 
     },
@@ -794,7 +982,7 @@ Object.assign(DCEL.prototype, {
 
         // instead of twinHedge
         var h3 = new Hedge(splitVertex, twinHedge.origin);
-        var h4 = new Hedge(twinHedge.origin, splitVertex);
+        var h4 = new Hedge(hedge.origin, splitVertex);
         hedges.push(h3);
         hedges.push(h4);
 
@@ -866,4 +1054,4 @@ Object.assign(DCEL.prototype, {
 
 });
 
-window.DCEL = DCEL;
+exports.DCEL = DCEL;

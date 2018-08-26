@@ -94,7 +94,7 @@
         function fillData(points, edges) {
             console.time("dcel cost");
             var dcel = new DCEL(points, edges);
-            var areas = dcel.areas();
+            var areas = dcel.internalFaces();
             console.timeEnd("dcel cost");
 
             var holeCount = 0;

@@ -4,7 +4,8 @@ dcel.js
 dcel.js is lightweight JavaScript implementation of [Doubly connected edge list](https://en.wikipedia.org/wiki/Doubly_connected_edge_list), inspired by [dcel(python)](https://github.com/anglyan/dcel).
 
 [demo1](https://shawn0326.github.io/dcel.js/examples/test1.html) ----
-[demo2](https://shawn0326.github.io/dcel.js/examples/test2.html)
+[demo2](https://shawn0326.github.io/dcel.js/examples/test2.html) ----
+[API](https://shawn0326.github.io/dcel.js/docs/)
 
 ### Extra Features ###
 

@@ -1,4 +1,32 @@
-import {Vertex} from './Vertex';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: DCEL.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: DCEL.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import {Vertex} from './Vertex';
 import {Hedge} from './Hedge';
 import {Face} from './Face';
 
@@ -23,7 +51,7 @@ function DCEL(points, edges) {
      */
     this.faces = [];
 
-    if (points && edges) {
+    if (points &amp;&amp; edges) {
         this.setDatas(points, edges);
     }
 
@@ -44,14 +72,14 @@ Object.assign(DCEL.prototype, {
         var faces = this.faces;
 
         // Step 1: vertex list creation
-        for (var i = 0, l = points.length; i < l; i++) {
+        for (var i = 0, l = points.length; i &lt; l; i++) {
             var p = points[i];
             var v = new Vertex(p[0], p[1]);
             vertices.push(v);
         }
 
         // Step 2: hedge list creation. Assignment of twins and vertices
-        for (var i = 0, l = edges.length; i < l; i++) {
+        for (var i = 0, l = edges.length; i &lt; l; i++) {
             var e = edges[i];
             var h1 = new Hedge(vertices[e[0]], vertices[e[1]]);
             var h2 = new Hedge(vertices[e[1]], vertices[e[0]]);
@@ -64,16 +92,16 @@ Object.assign(DCEL.prototype, {
         }
 
         // Step 3: Identification of next and prev hedges
-        for (var j = 0, ll = vertices.length; j < ll; j++) {
+        for (var j = 0, ll = vertices.length; j &lt; ll; j++) {
             var v = vertices[j];
             v.sortincident();
             var l = v.hedgelist.length;
             if (l == 0) continue; // skip vertex that has no edges
-            if (l < 2) {
+            if (l &lt; 2) {
                 v.hedgelist[0].prevhedge = v.hedgelist[0].twin;
                 v.hedgelist[0].twin.nexthedge = v.hedgelist[0];
             } else {
-                for(var i = 0; i < l - 1; i++) {
+                for(var i = 0; i &lt; l - 1; i++) {
                     v.hedgelist[i].twin.nexthedge = v.hedgelist[i+1];
                     v.hedgelist[i+1].prevhedge = v.hedgelist[i].twin;
                 }
@@ -112,7 +140,7 @@ Object.assign(DCEL.prototype, {
      */
     internalFaces: function() {
         var result = [], faces = this.faces;
-        for (var i = 0, l = faces.length; i < l; i++) {
+        for (var i = 0, l = faces.length; i &lt; l; i++) {
             var f = faces[i];
             if (f.internal) {
                 result.push(f);
@@ -122,13 +150,13 @@ Object.assign(DCEL.prototype, {
     },
 
     /**
-     * get all external (area <= 0) faces
+     * get all external (area &lt;= 0) faces
      * @memberof DCEL#
      * @return {Face[]} external faces
      */
     externalFaces: function() {
         var result = [], faces = this.faces;
-        for (var i = 0, l = faces.length; i < l; i++) {
+        for (var i = 0, l = faces.length; i &lt; l; i++) {
             var f = faces[i];
             if (f.external) {
                 result.push(f);
@@ -147,15 +175,15 @@ Object.assign(DCEL.prototype, {
         var hedges = this.hedges;
         var faces = this.faces;
 
-        for (var i = 0, l = vertices.length; i < l; i++) {
+        for (var i = 0, l = vertices.length; i &lt; l; i++) {
             vertices[i].dispose();
         }
 
-        for (var i = 0, l = hedges.length; i < l; i++) {
+        for (var i = 0, l = hedges.length; i &lt; l; i++) {
             hedges[i].dispose();
         }
 
-        for (var i = 0, l = faces.length; i < l; i++) {
+        for (var i = 0, l = faces.length; i &lt; l; i++) {
             faces[i].dispose();
         }
 
@@ -175,9 +203,9 @@ Object.assign(DCEL.prototype, {
 
         var vertices = this.vertices;
         var vertex;
-        for (var i = 0, l = vertices.length; i < l; i++) {
+        for (var i = 0, l = vertices.length; i &lt; l; i++) {
             vertex = vertices[i];
-            if(vertex.x === x && vertex.y === y) {
+            if(vertex.x === x &amp;&amp; vertex.y === y) {
                 return vertex;
             }
         }
@@ -198,11 +226,11 @@ Object.assign(DCEL.prototype, {
 
         var hedges = this.hedges;
         var hedge, twinHedge;
-        for (var i = 0, l = hedges.length; i < l; i++) {
+        for (var i = 0, l = hedges.length; i &lt; l; i++) {
             hedge = hedges[i];
             twinHedge = hedge.twin;
-            if (hedge.origin.x === x1 && hedge.origin.y === y1
-            && twinHedge.origin.x === x2 && twinHedge.origin.y === y2) {
+            if (hedge.origin.x === x1 &amp;&amp; hedge.origin.y === y1
+            &amp;&amp; twinHedge.origin.x === x2 &amp;&amp; twinHedge.origin.y === y2) {
                 return hedge;
             }
         }
@@ -310,9 +338,9 @@ Object.assign(DCEL.prototype, {
 
         if (head1.face) {
             var index = faces.indexOf(head1.face);
-            index > -1 && faces.splice(index, 1);
+            index > -1 &amp;&amp; faces.splice(index, 1);
             head1.face.dispose();
-            if (head1.face.area <= 0) {
+            if (head1.face.area &lt;= 0) {
                 holesDirty = true;
             }
         }
@@ -321,9 +349,9 @@ Object.assign(DCEL.prototype, {
 
         if (head2.face) {
             var index = faces.indexOf(head2.face);
-            index > -1 && faces.splice(index, 1);
+            index > -1 &amp;&amp; faces.splice(index, 1);
             head2.face.dispose();
-            if (head2.face.area <= 0) {
+            if (head2.face.area &lt;= 0) {
                 holesDirty = true;
             }
         }
@@ -353,7 +381,7 @@ Object.assign(DCEL.prototype, {
                 h.face = face1;
             }
 
-            if (face1.area <= 0) {
+            if (face1.area &lt;= 0) {
                 holesDirty = true;
             }
 
@@ -370,7 +398,7 @@ Object.assign(DCEL.prototype, {
                 h.face = face2;
             }
 
-            if (face2.area <= 0) {
+            if (face2.area &lt;= 0) {
                 holesDirty = true;
             }
 
@@ -381,7 +409,7 @@ Object.assign(DCEL.prototype, {
 
         if ( holesDirty ) {
             
-            for (var i = 0, l = faces.length; i < l; i++) {
+            for (var i = 0, l = faces.length; i &lt; l; i++) {
                 faces[i]._holesDirty = true;
             }
 
@@ -430,16 +458,16 @@ Object.assign(DCEL.prototype, {
         // notice that two hedges may belong to the same face
 
         var index = faces.indexOf(hedge.face);
-        index > -1 && faces.splice(index, 1);
+        index > -1 &amp;&amp; faces.splice(index, 1);
         hedge.face.dispose();
-        if (hedge.face.area <= 0) {
+        if (hedge.face.area &lt;= 0) {
             holesDirty = true;
         }
 
         var index = faces.indexOf(twinHedge.face);
-        index > -1 && faces.splice(index, 1);
+        index > -1 &amp;&amp; faces.splice(index, 1);
         twinHedge.face.dispose();
-        if (twinHedge.face.area <= 0) {
+        if (twinHedge.face.area &lt;= 0) {
             holesDirty = true;
         }
 
@@ -500,7 +528,7 @@ Object.assign(DCEL.prototype, {
             face2.wedge = head2;
         }
 
-        if ( face1 && face2 ) {
+        if ( face1 &amp;&amp; face2 ) {
             if( face1.equals(face2) ) { 
                 face2.dispose();
                 face2 = null;
@@ -519,7 +547,7 @@ Object.assign(DCEL.prototype, {
                 h.face = face1;
             }
 
-            if (face1.area <= 0) {
+            if (face1.area &lt;= 0) {
                 holesDirty = true;
             }
 
@@ -536,7 +564,7 @@ Object.assign(DCEL.prototype, {
                 h.face = face2;
             }
 
-            if (face2.area <= 0) {
+            if (face2.area &lt;= 0) {
                 holesDirty = true;
             }
 
@@ -547,7 +575,7 @@ Object.assign(DCEL.prototype, {
 
         if ( holesDirty ) {
             
-            for (var i = 0, l = faces.length; i < l; i++) {
+            for (var i = 0, l = faces.length; i &lt; l; i++) {
                 faces[i]._holesDirty = true;
             }
 
@@ -648,7 +676,7 @@ Object.assign(DCEL.prototype, {
         var index = twinHedge.origin.hedgelist.indexOf(twinHedge);
         twinHedge.origin.hedgelist.splice(index, 1, h3);
 
-        // step 5: remove hedge & twinHedge
+        // step 5: remove hedge &amp; twinHedge
 
         hedge.dispose();
         twinHedge.dispose();
@@ -663,4 +691,26 @@ Object.assign(DCEL.prototype, {
 
 });
 
-export {DCEL};
+export {DCEL};</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="DCEL.html">DCEL</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Aug 27 2018 23:15:07 GMT+0800 (CST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

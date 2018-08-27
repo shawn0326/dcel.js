@@ -12,7 +12,11 @@ function hangle(dx, dy) {
 var counter = 0;
 
 /**
- * Half Edge
+ * Half Edge.
+ * Don't instantiate this class in your code.
+ * it can only be called by the {@link DCEL} class.
+ * @class
+ * @private
  * @param {Vertex} v1 
  * @param {Vertex} v2 
  */

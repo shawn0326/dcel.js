@@ -7,15 +7,28 @@ function sortByAngle(a, b) {
 var counter = 0;
 
 /**
- * Vertex
+ * Vertex.
+ * Don't instantiate this class in your code.
+ * it can only be called by the {@link DCEL} class.
+ * @class
+ * @private
  * @param {number} x
  * @param {number} y 
  */
 function Vertex(x, y) {
 
     this.id = counter++;
+
+    /**
+     * @type number 
+     */
     this.x = x;
+
+    /**
+     * @type number 
+     */
     this.y = y;
+
     this.hedgelist = [];
     
 }

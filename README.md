@@ -39,9 +39,9 @@ faces[0].areaExceptHoles
 dcel.externalFaces();
 
 // edges modify
-decl.addEdge(x1, y1, x2, y2);
-decl.removeEdge(x1, y1, x2, y2);
-decl.splitEdge(x1, y1, x2, y2, splitX, splitY);
+dcel.addEdge(x1, y1, x2, y2);
+dcel.removeEdge(x1, y1, x2, y2);
+dcel.splitEdge(x1, y1, x2, y2, splitX, splitY);
 
 ````
 

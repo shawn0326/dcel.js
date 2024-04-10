@@ -1,5 +1,5 @@
 {
-  "name": "dcel",
+  "name": "dcel-js",
   "version": "0.0.1",
   "description": "dcel.js is a JavaScript implementation of Doubly connected edge list.",
   "type": "module",

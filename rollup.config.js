@@ -1,27 +1,32 @@
-const BANNER = 
-    '/**\n' +
-    ' * dcel.js (https://github.com/shawn0326/dcel.js)\n' +
-    ' * @author shawn0326 http://www.halflab.me/\n' +
-    ' */';
+const BANNER = `/**
+ * @license
+ * Copyright 2018-present dcel.js Authors
+ * SPDX-License-Identifier: MIT
+ */\n`;
 
 export default [{
-	input: './index_umd.js',
-	plugins: [
-	],
-	// sourceMap: true,
-	output: { 
+	input: 'src/DCEL.js',
+	plugins: [],
+	output: {
+        name: 'DCEL',
         format: 'umd',
         file: './build/dcel.js',
         banner: BANNER
     }
 }, {
-    input: './index.js',
-	plugins: [
-	],
-	// sourceMap: true,
+	input: 'src/DCEL.js',
+	plugins: [],
+	output: { 
+        format: 'esm',
+        file: 'build/dcel.module.js',
+        banner: BANNER
+    }
+}, {
+    input: 'src/DCEL.js',
+	plugins: [],
 	output: {
         format: 'cjs',
-        file: './build/dcel.c.js',
+        file: 'build/dcel.cjs',
         banner: BANNER
     }
 }];

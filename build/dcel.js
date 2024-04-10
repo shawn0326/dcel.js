@@ -1,12 +1,14 @@
 /**
- * dcel.js (https://github.com/shawn0326/dcel.js)
- * @author shawn0326 http://www.halflab.me/
+ * @license
+ * Copyright 2018-present dcel.js Authors
+ * SPDX-License-Identifier: MIT
  */
+
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory() :
+    typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
     typeof define === 'function' && define.amd ? define(factory) :
-    (factory());
-}(this, (function () { 'use strict';
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.DCEL = factory());
+})(this, (function () { 'use strict';
 
     // by this, internal face is ccw
     // hedgelist is cw
@@ -14,18 +16,31 @@
         return b.angle - a.angle;
     }
 
-    var counter = 0;
+    var counter$2 = 0;
 
     /**
-     * Vertex
+     * Vertex.
+     * Don't instantiate this class in your code.
+     * it can only be called by the {@link DCEL} class.
+     * @class
+     * @private
      * @param {number} x
      * @param {number} y 
      */
     function Vertex(x, y) {
 
-        this.id = counter++;
+        this.id = counter$2++;
+
+        /**
+         * @type number 
+         */
         this.x = x;
+
+        /**
+         * @type number 
+         */
         this.y = y;
+
         this.hedgelist = [];
         
     }
@@ -56,7 +71,11 @@
     var counter$1 = 0;
 
     /**
-     * Half Edge
+     * Half Edge.
+     * Don't instantiate this class in your code.
+     * it can only be called by the {@link DCEL} class.
+     * @class
+     * @private
      * @param {Vertex} v1 
      * @param {Vertex} v2 
      */
@@ -84,20 +103,41 @@
     });
 
     /**
-     * AABB 
+     * AABB.
+     * Don't instantiate this class in your code.
+     * @class
+     * @private
      */
     function AABB() {
 
+        /**
+         * @type {number}
+         */
         this.minX = + Infinity;
+        /**
+         * @type {number}
+         */
         this.minY = + Infinity;
 
+        /**
+         * @type {number}
+         */
         this.maxX = - Infinity;
+        /**
+         * @type {number}
+         */
         this.maxY = - Infinity;
 
     }
 
     Object.defineProperties(AABB.prototype, {
 
+        /**
+         * width
+         * @memberof AABB#
+         * @readonly
+         * @type {number}
+         */
         width: {
 
             get: function() {
@@ -106,6 +146,12 @@
 
         },
 
+        /**
+         * height
+         * @memberof AABB#
+         * @readonly
+         * @type {number}
+         */
         height: {
 
             get: function() {
@@ -221,14 +267,19 @@
 
     }
 
-    var counter$2 = 0;
+    var counter = 0;
 
     /**
-     * Face
+     * Face.
+     * Don't instantiate this class in your code.
+     * it can only be called by the {@link DCEL} class.
+     * @class
+     * @private
+     * @param {DCEL} dcel
      */
     function Face(dcel) {
 
-        this.id = counter$2++;
+        this.id = counter++;
 
         this.wedge = null;
 
@@ -249,6 +300,12 @@
 
     Object.defineProperties(Face.prototype, {
 
+        /**
+         * face area
+         * @memberof Face#
+         * @readonly
+         * @type {number}
+         */
         area: {
 
             get: function() {
@@ -276,6 +333,12 @@
 
         },
 
+        /**
+         * face area except holes
+         * @memberof Face#
+         * @readonly
+         * @type {number}
+         */
         areaExceptHoles: {
 
             get: function() {
@@ -293,6 +356,12 @@
 
         },
 
+        /**
+         * is this face internal (area > 0)
+         * @memberof Face#
+         * @readonly
+         * @type {boolean}
+         */
         internal: {
 
             get: function() {
@@ -301,6 +370,12 @@
 
         },
 
+        /**
+         * is this face internal (area <= 0)
+         * @memberof Face#
+         * @readonly
+         * @type {boolean}
+         */
         external: {
             
             get: function() {
@@ -309,6 +384,14 @@
 
         },
 
+        /**
+         * vertex list of this face.
+         * if this face is internal, vertex order is ccw
+         * if this face is external, vertex order is cw
+         * @memberof Face#
+         * @readonly
+         * @type {Vertex[]}
+         */
         vertexlist: {
 
             get: function() {
@@ -336,6 +419,13 @@
 
         },
 
+        /**
+         * holes of this face.
+         * all of this holes are external faces.
+         * @memberof Face#
+         * @readonly
+         * @type {Face[]}
+         */
         holes: {
 
             get: function() {
@@ -366,6 +456,12 @@
 
         },
 
+        /**
+         * aabb of this face
+         * @memberof Face#
+         * @readonly
+         * @type {AABB}
+         */
         aabb: {
 
             get: function() {
@@ -420,6 +516,12 @@
 
         },
 
+        /**
+         * is this face is equals another
+         * @memberof Face#
+         * @param f target face
+         * @return {boolean}
+         */
         equals: function(f) {
             var list1 = this.vertexlist;
             var list2 = f.vertexlist;
@@ -464,13 +566,23 @@
 
     /**
      * DCEL
-     * @param {Number[]} points [[x1, y1], [x2, y2], ...]
-     * @param {Number[]} edges [[start1, end1], [start2, end2]...] starts and ends are indices of points
+     * @class
+     * @param {Number[]} [points=] [[x1, y1], [x2, y2], ...]
+     * @param {Number[]} [edges=] [[start1, end1], [start2, end2]...] starts and ends are indices of points
      */
     function DCEL(points, edges) {
 
+        /**
+         * @type {Vertex[]} 
+         */
         this.vertices = [];
+        /**
+         * @type {Hedge[]} 
+         */
         this.hedges = [];
+        /**
+         * @type {Face[]} 
+         */
         this.faces = [];
 
         if (points && edges) {
@@ -481,6 +593,12 @@
 
     Object.assign(DCEL.prototype, {
 
+        /**
+         * set data
+         * @memberof DCEL#
+         * @param {Number[]} points [[x1, y1], [x2, y2], ...]
+         * @param {Number[]} edges [[start1, end1], [start2, end2]...] starts and ends are indices of points
+         */
         setDatas: function(points, edges) {
 
             var vertices = this.vertices;
@@ -549,6 +667,11 @@
             }
         },
 
+        /**
+         * get all internal (area > 0) faces
+         * @memberof DCEL#
+         * @return {Face[]} internal faces
+         */
         internalFaces: function() {
             var result = [], faces = this.faces;
             for (var i = 0, l = faces.length; i < l; i++) {
@@ -560,6 +683,11 @@
             return result;
         },
 
+        /**
+         * get all external (area <= 0) faces
+         * @memberof DCEL#
+         * @return {Face[]} external faces
+         */
         externalFaces: function() {
             var result = [], faces = this.faces;
             for (var i = 0, l = faces.length; i < l; i++) {
@@ -572,7 +700,8 @@
         },
 
         /**
-         * dispose
+         * dispose old datas
+         * @memberof DCEL#
          */
         dispose: function() {
 
@@ -598,6 +727,12 @@
             
         },
 
+        /**
+         * find vertex
+         * @memberof DCEL#
+         * @param {number} x
+         * @param {number} y
+         */
         findVertex: function(x, y) {
 
             var vertices = this.vertices;
@@ -613,6 +748,14 @@
 
         },
 
+        /**
+         * find hedge
+         * @memberof DCEL#
+         * @param {number} x1
+         * @param {number} y1
+         * @param {number} x2
+         * @param {number} y2
+         */
         findHedge: function(x1, y1, x2, y2) {
 
             var hedges = this.hedges;
@@ -630,6 +773,14 @@
 
         },
 
+        /**
+         * add edge
+         * @memberof DCEL#
+         * @param {number} x1
+         * @param {number} y1
+         * @param {number} x2
+         * @param {number} y2
+         */
         addEdge: function(x1, y1, x2, y2) {
 
             var vertices = this.vertices;
@@ -800,6 +951,14 @@
 
         },
 
+        /**
+         * remove edge
+         * @memberof DCEL#
+         * @param {number} x1
+         * @param {number} y1
+         * @param {number} x2
+         * @param {number} y2
+         */
         removeEdge: function(x1, y1, x2, y2) {
 
             var vertices = this.vertices;
@@ -958,6 +1117,16 @@
 
         },
 
+        /**
+         * split edge
+         * @memberof DCEL#
+         * @param {number} x1
+         * @param {number} y1
+         * @param {number} x2
+         * @param {number} y2
+         * @param {number} splitX
+         * @param {number} splitY
+         */
         splitEdge: function(x1, y1, x2, y2, splitX, splitY) {
 
             var vertices = this.vertices;
@@ -1056,6 +1225,6 @@
 
     });
 
-    window.DCEL = DCEL;
+    return DCEL;
 
-})));
+}));

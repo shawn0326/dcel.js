@@ -1,4 +1,4 @@
-var DCEL = require('../build/dcel.c.js').DCEL;
+var DCEL = require('../build/dcel.cjs');
 var assert = require('assert');
 
 describe('DCEL: addEdge', function() {

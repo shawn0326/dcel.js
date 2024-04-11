@@ -44,14 +44,19 @@
 
     <section>
         <article><h1>dcel.js</h1>
-<p>dcel.js is lightweight JavaScript implementation of <a href="https://en.wikipedia.org/wiki/Doubly_connected_edge_list">Doubly connected edge list</a>, inspired by <a href="https://github.com/anglyan/dcel">dcel(python)</a>.</p>
+<p><a href="https://www.npmjs.com/package/dcel-js"><img src="https://img.shields.io/npm/v/dcel-js" alt="NPM Package"></a></p>
+<p>dcel.js is a JavaScript implementation of <a href="https://en.wikipedia.org/wiki/Doubly_connected_edge_list">Doubly connected edge list</a>, inspired by <a href="https://github.com/anglyan/dcel">dcel(python)</a>.</p>
 <p><a href="https://shawn0326.github.io/dcel.js/examples/test1.html">demo1</a> |
 <a href="https://shawn0326.github.io/dcel.js/examples/test2.html">demo2</a> |
 <a href="https://shawn0326.github.io/dcel.js/docs/">API</a></p>
-<h2>More Features</h2>
+<h2>Features</h2>
 <ul>
-<li>get internal face's holes.</li>
-<li>edges modify.</li>
+<li>Create a <code>DCEL</code> object with points and edges.</li>
+<li>Get internal and external faces of the DCEL.</li>
+<li>Get area of faces.</li>
+<li>Get vertices of faces (clockwise or counterclockwise).</li>
+<li>Get holes of faces (if there are any).</li>
+<li>Add, remove, split edges to the DCEL.</li>
 </ul>
 <h2>Import</h2>
 <p>Use <code>dcel.js</code> in your page:</p>
@@ -69,8 +74,11 @@
 // edges [[start1, end1], [start2, end2]...] starts and ends are indices of points
 const dcel = new DCEL(points, edges);
 
-// return internal faces
+// get internal faces
 const faces = dcel.internalFaces();
+
+// get vertices
+faces[0].vertexlist
 
 // get holes
 faces[0].holes
@@ -81,7 +89,7 @@ faces[0].area
 // get area except holes
 faces[0].areaExceptHoles
 
-// return external faces
+// get external faces
 dcel.externalFaces();
 
 // modify edges
@@ -100,7 +108,7 @@ dcel.splitEdge(x1, y1, x2, y2, splitX, splitY);
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="DCEL.html">DCEL</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AABB.html">AABB</a></li><li><a href="DCEL.html">DCEL</a></li><li><a href="Face.html">Face</a></li><li><a href="Hedge.html">Hedge</a></li><li><a href="Vertex.html">Vertex</a></li></ul>
 </nav>
 
 <br class="clear">

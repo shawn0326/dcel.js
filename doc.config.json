@@ -1,7 +1,7 @@
 {
-    "templates": {
-        "default": {
-            "includeDate": false
-        }
+  "templates": {
+    "default": {
+      "includeDate": false
     }
+  }
 }

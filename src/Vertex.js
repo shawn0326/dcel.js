@@ -1,48 +1,58 @@
-// by this, internal face is ccw
-// hedgelist is cw
-function sortByAngle(a, b) {
-    return b.angle - a.angle;
-}
-
-var counter = 0;
-
 /**
- * Vertex.
- * Don't instantiate this class in your code.
- * it can only be called by the {@link DCEL} class.
- * @class
- * @private
- * @param {number} x
- * @param {number} y 
+ * Vertex class.
  */
-function Vertex(x, y) {
-
+class Vertex {
+  /**
+   * Create a new vertex.
+   * @protected
+   * @param {number} x - The x coordinate of the vertex.
+   * @param {number} y - The y coordinate of the vertex.
+   */
+  constructor(x, y) {
+    /**
+     * @type {number}
+     * @readonly
+     */
     this.id = counter++;
 
     /**
-     * @type number 
+     * @type {number}
      */
     this.x = x;
 
     /**
-     * @type number 
+     * @type {number}
      */
     this.y = y;
 
+    /**
+     * @type {Hedge[]}
+     */
     this.hedgelist = [];
-    
+  }
+
+  /**
+   * Sort the hedgelist to cw.
+   * By this, the internal face is ccw.
+   * @protected
+   */
+  sortincident() {
+    this.hedgelist.sort(sortByAngle);
+  }
+
+  /**
+   * Dispose the hedgelist of the vertex.
+   * @protected
+   */
+  dispose() {
+    this.hedgelist.length = 0;
+  }
 }
 
-Object.assign(Vertex.prototype, {
+let counter = 0;
 
-    sortincident: function() {
-        this.hedgelist.sort(sortByAngle);
-    },
+function sortByAngle(a, b) {
+  return b.angle - a.angle;
+}
 
-    dispose: function() {
-        this.hedgelist.length = 0;
-    }
-
-});
-
-export {Vertex};
+export { Vertex };

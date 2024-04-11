@@ -30,6 +30,8 @@
     
         <h2><span class="attribs"><span class="type-signature"></span></span>DCEL<span class="signature">(points=<span class="signature-attributes">opt</span>, edges=<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h2>
         
+            <div class="class-description">The Doubly-Connected Edge List (DCEL) data structure.</div>
+        
     
 </header>
 
@@ -38,6 +40,8 @@
     
         
 
+    
+    <h2>Constructor</h2>
     
 
     
@@ -49,7 +53,7 @@
 
 
 <div class="description">
-    DCEL
+    Create a new DCEL.
 </div>
 
 
@@ -93,7 +97,7 @@
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;Number></span>
+<span class="param-type">Array</span>
 
 
             
@@ -113,7 +117,7 @@
 
             
 
-            <td class="description last">[[x1, y1], [x2, y2], ...]</td>
+            <td class="description last">The vertices of the DCEL. [[x1, y1], [x2, y2], ...].</td>
         </tr>
 
     
@@ -126,7 +130,7 @@
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;Number></span>
+<span class="param-type">Array</span>
 
 
             
@@ -146,7 +150,7 @@
 
             
 
-            <td class="description last">[[start1, end1], [start2, end2]...] starts and ends are indices of points</td>
+            <td class="description last">The edges of the DCEL. [[start1, end1], [start2, end2]...]. Starts and Ends are indices of vertices.</td>
         </tr>
 
     
@@ -187,12 +191,19 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="DCEL.js.html">DCEL.js</a>, <a href="DCEL.js.html#line11">line 11</a>
+        <a href="DCEL.js.html">DCEL.js</a>, <a href="DCEL.js.html#line9">line 9</a>
     </li></ul></dd>
     
 
     
 
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="https://en.wikipedia.org/wiki/Doubly_connected_edge_list">https://en.wikipedia.org/wiki/Doubly_connected_edge_list</a></li>
+        </ul>
+    </dd>
     
 
     
@@ -242,6 +253,10 @@
 
 
 
+<div class="description">
+    The faces of the DCEL.
+</div>
+
 
 
     <h5>Type:</h5>
@@ -287,7 +302,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="DCEL.js.html">DCEL.js</a>, <a href="DCEL.js.html#line24">line 24</a>
+        <a href="DCEL.js.html">DCEL.js</a>, <a href="DCEL.js.html#line32">line 32</a>
     </li></ul></dd>
     
 
@@ -305,10 +320,14 @@
 
         
             
-<h4 class="name" id="hedges"><span class="type-signature"></span>hedges<span class="type-signature"> :Array.&lt;Hedge></span></h4>
+<h4 class="name" id="hedges"><span class="type-signature"></span>hedges<span class="type-signature"> :Array.&lt;<a href="Hedge.html">Hedge</a>></span></h4>
 
 
 
+
+<div class="description">
+    The half edges of the DCEL.
+</div>
 
 
 
@@ -316,7 +335,79 @@
     <ul>
         <li>
             
-<span class="param-type">Array.&lt;Hedge></span>
+<span class="param-type">Array.&lt;<a href="Hedge.html">Hedge</a>></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="DCEL.js.html">DCEL.js</a>, <a href="DCEL.js.html#line26">line 26</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="vertices"><span class="type-signature"></span>vertices<span class="type-signature"> :Array.&lt;<a href="Vertex.html">Vertex</a>></span></h4>
+
+
+
+
+<div class="description">
+    The vertices of the DCEL.
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Array.&lt;<a href="Vertex.html">Vertex</a>></span>
 
 
         </li>
@@ -372,74 +463,6 @@
 
 
         
-            
-<h4 class="name" id="vertices"><span class="type-signature"></span>vertices<span class="type-signature"> :Array.&lt;<a href="Vertex.html">Vertex</a>></span></h4>
-
-
-
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">Array.&lt;<a href="Vertex.html">Vertex</a>></span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="DCEL.js.html">DCEL.js</a>, <a href="DCEL.js.html#line16">line 16</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
     
 
     
@@ -459,7 +482,7 @@
 
 
 <div class="description">
-    add edge
+    Add an edge to the DCEL.
 </div>
 
 
@@ -511,7 +534,7 @@
 
             
 
-            <td class="description last"></td>
+            <td class="description last">The x coordinate of the start vertex.</td>
         </tr>
 
     
@@ -534,7 +557,7 @@
 
             
 
-            <td class="description last"></td>
+            <td class="description last">The y coordinate of the start vertex.</td>
         </tr>
 
     
@@ -557,7 +580,7 @@
 
             
 
-            <td class="description last"></td>
+            <td class="description last">The x coordinate of the end vertex.</td>
         </tr>
 
     
@@ -580,7 +603,7 @@
 
             
 
-            <td class="description last"></td>
+            <td class="description last">The y coordinate of the end vertex.</td>
         </tr>
 
     
@@ -621,7 +644,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="DCEL.js.html">DCEL.js</a>, <a href="DCEL.js.html#line222">line 222</a>
+        <a href="DCEL.js.html">DCEL.js</a>, <a href="DCEL.js.html#line221">line 221</a>
     </li></ul></dd>
     
 
@@ -665,7 +688,7 @@
 
 
 <div class="description">
-    dispose old datas
+    Dispose old datas.
 </div>
 
 
@@ -709,7 +732,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="DCEL.js.html">DCEL.js</a>, <a href="DCEL.js.html#line144">line 144</a>
+        <a href="DCEL.js.html">DCEL.js</a>, <a href="DCEL.js.html#line146">line 146</a>
     </li></ul></dd>
     
 
@@ -753,7 +776,7 @@
 
 
 <div class="description">
-    get all external (area <= 0) faces
+    Get all external (area <= 0) faces
 </div>
 
 
@@ -797,7 +820,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="DCEL.js.html">DCEL.js</a>, <a href="DCEL.js.html#line129">line 129</a>
+        <a href="DCEL.js.html">DCEL.js</a>, <a href="DCEL.js.html#line131">line 131</a>
     </li></ul></dd>
     
 
@@ -826,7 +849,7 @@
 
         
 <div class="param-desc">
-    external faces
+    - External faces
 </div>
 
 
@@ -855,7 +878,7 @@
     
 
     
-    <h4 class="name" id="findHedge"><span class="type-signature"></span>findHedge<span class="signature">(x1, y1, x2, y2)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="findHedge"><span class="type-signature"></span>findHedge<span class="signature">(x1, y1, x2, y2)</span><span class="type-signature"> &rarr; {<a href="Hedge.html">Hedge</a>|null}</span></h4>
     
 
     
@@ -863,7 +886,7 @@
 
 
 <div class="description">
-    find hedge
+    Find half edge by start and end vertices coordinates.
 </div>
 
 
@@ -915,7 +938,7 @@
 
             
 
-            <td class="description last"></td>
+            <td class="description last">The x coordinate of the start vertex.</td>
         </tr>
 
     
@@ -938,7 +961,7 @@
 
             
 
-            <td class="description last"></td>
+            <td class="description last">The y coordinate of the start vertex.</td>
         </tr>
 
     
@@ -961,7 +984,7 @@
 
             
 
-            <td class="description last"></td>
+            <td class="description last">The x coordinate of the end vertex.</td>
         </tr>
 
     
@@ -984,7 +1007,7 @@
 
             
 
-            <td class="description last"></td>
+            <td class="description last">The y coordinate of the end vertex.</td>
         </tr>
 
     
@@ -1025,7 +1048,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="DCEL.js.html">DCEL.js</a>, <a href="DCEL.js.html#line197">line 197</a>
+        <a href="DCEL.js.html">DCEL.js</a>, <a href="DCEL.js.html#line195">line 195</a>
     </li></ul></dd>
     
 
@@ -1050,6 +1073,31 @@
 
 
 
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    - The half edge.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="Hedge.html">Hedge</a></span>
+|
+
+<span class="param-type">null</span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
@@ -1061,7 +1109,7 @@
     
 
     
-    <h4 class="name" id="findVertex"><span class="type-signature"></span>findVertex<span class="signature">(x, y)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="findVertex"><span class="type-signature"></span>findVertex<span class="signature">(x, y)</span><span class="type-signature"> &rarr; {<a href="Vertex.html">Vertex</a>|null}</span></h4>
     
 
     
@@ -1069,7 +1117,7 @@
 
 
 <div class="description">
-    find vertex
+    Find vertex by x and y coordinate.
 </div>
 
 
@@ -1121,7 +1169,7 @@
 
             
 
-            <td class="description last"></td>
+            <td class="description last">The x coordinate of the vertex.</td>
         </tr>
 
     
@@ -1144,7 +1192,7 @@
 
             
 
-            <td class="description last"></td>
+            <td class="description last">The y coordinate of the vertex.</td>
         </tr>
 
     
@@ -1210,6 +1258,31 @@
 
 
 
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    - The vertex.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="Vertex.html">Vertex</a></span>
+|
+
+<span class="param-type">null</span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
@@ -1229,7 +1302,7 @@
 
 
 <div class="description">
-    get all internal (area > 0) faces
+    Get all internal (area > 0) faces
 </div>
 
 
@@ -1273,7 +1346,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="DCEL.js.html">DCEL.js</a>, <a href="DCEL.js.html#line113">line 113</a>
+        <a href="DCEL.js.html">DCEL.js</a>, <a href="DCEL.js.html#line115">line 115</a>
     </li></ul></dd>
     
 
@@ -1302,7 +1375,7 @@
 
         
 <div class="param-desc">
-    internal faces
+    - Internal faces
 </div>
 
 
@@ -1339,7 +1412,7 @@
 
 
 <div class="description">
-    remove edge
+    Remove an edge from the DCEL.
 </div>
 
 
@@ -1391,7 +1464,7 @@
 
             
 
-            <td class="description last"></td>
+            <td class="description last">The x coordinate of the start vertex.</td>
         </tr>
 
     
@@ -1414,7 +1487,7 @@
 
             
 
-            <td class="description last"></td>
+            <td class="description last">The y coordinate of the start vertex.</td>
         </tr>
 
     
@@ -1437,7 +1510,7 @@
 
             
 
-            <td class="description last"></td>
+            <td class="description last">The x coordinate of the end vertex.</td>
         </tr>
 
     
@@ -1460,7 +1533,7 @@
 
             
 
-            <td class="description last"></td>
+            <td class="description last">The y coordinate of the end vertex.</td>
         </tr>
 
     
@@ -1501,7 +1574,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="DCEL.js.html">DCEL.js</a>, <a href="DCEL.js.html#line400">line 400</a>
+        <a href="DCEL.js.html">DCEL.js</a>, <a href="DCEL.js.html#line391">line 391</a>
     </li></ul></dd>
     
 
@@ -1537,7 +1610,7 @@
     
 
     
-    <h4 class="name" id="setDatas"><span class="type-signature"></span>setDatas<span class="signature">(points, edges)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="setDatas"><span class="type-signature"></span>setDatas<span class="signature">(points=<span class="signature-attributes">opt</span>, edges=<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
     
 
     
@@ -1545,7 +1618,7 @@
 
 
 <div class="description">
-    set data
+    Set the vertices and edges of the DCEL.
 </div>
 
 
@@ -1569,6 +1642,8 @@
         <th>Type</th>
 
         
+        <th>Attributes</th>
+        
 
         
 
@@ -1581,46 +1656,66 @@
 
         <tr>
             
-                <td class="name"><code>points</code></td>
+                <td class="name"><code>points=</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;Number></span>
+<span class="param-type">Array</span>
 
 
             
             </td>
 
             
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
 
             
 
-            <td class="description last">[[x1, y1], [x2, y2], ...]</td>
+            <td class="description last">The vertices of the DCEL. [[x1, y1], [x2, y2], ...].</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>edges</code></td>
+                <td class="name"><code>edges=</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;Number></span>
+<span class="param-type">Array</span>
 
 
             
             </td>
 
             
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
 
             
 
-            <td class="description last">[[start1, end1], [start2, end2]...] starts and ends are indices of points</td>
+            <td class="description last">The edges of the DCEL. [[start1, end1], [start2, end2]...]. Starts and Ends are indices of vertices.</td>
         </tr>
 
     
@@ -1661,7 +1756,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="DCEL.js.html">DCEL.js</a>, <a href="DCEL.js.html#line40">line 40</a>
+        <a href="DCEL.js.html">DCEL.js</a>, <a href="DCEL.js.html#line44">line 44</a>
     </li></ul></dd>
     
 
@@ -1705,7 +1800,7 @@
 
 
 <div class="description">
-    split edge
+    Split an edge of the DCEL.
 </div>
 
 
@@ -1757,7 +1852,7 @@
 
             
 
-            <td class="description last"></td>
+            <td class="description last">The x coordinate of the start vertex.</td>
         </tr>
 
     
@@ -1780,7 +1875,7 @@
 
             
 
-            <td class="description last"></td>
+            <td class="description last">The y coordinate of the start vertex.</td>
         </tr>
 
     
@@ -1803,7 +1898,7 @@
 
             
 
-            <td class="description last"></td>
+            <td class="description last">The x coordinate of the end vertex.</td>
         </tr>
 
     
@@ -1826,7 +1921,7 @@
 
             
 
-            <td class="description last"></td>
+            <td class="description last">The y coordinate of the end vertex.</td>
         </tr>
 
     
@@ -1849,7 +1944,7 @@
 
             
 
-            <td class="description last"></td>
+            <td class="description last">The x coordinate of the split vertex.</td>
         </tr>
 
     
@@ -1872,7 +1967,7 @@
 
             
 
-            <td class="description last"></td>
+            <td class="description last">The y coordinate of the split vertex.</td>
         </tr>
 
     
@@ -1913,7 +2008,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="DCEL.js.html">DCEL.js</a>, <a href="DCEL.js.html#line568">line 568</a>
+        <a href="DCEL.js.html">DCEL.js</a>, <a href="DCEL.js.html#line557">line 557</a>
     </li></ul></dd>
     
 
@@ -1959,7 +2054,7 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="DCEL.html">DCEL</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AABB.html">AABB</a></li><li><a href="DCEL.html">DCEL</a></li><li><a href="Face.html">Face</a></li><li><a href="Hedge.html">Hedge</a></li><li><a href="Vertex.html">Vertex</a></li></ul>
 </nav>
 
 <br class="clear">

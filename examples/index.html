@@ -1,0 +1,213 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>dcel.js - Example</title>
+    <script src="../build/dcel.js"></script>
+    <script src="./libs/dat.gui.js"></script>
+    <script src="./libs/jquery-3.4.0.min.js"></script>
+    <style>
+      .info {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        color: white;
+        padding: 10px;
+        background-color: rgba(0, 0, 0, 0.8);
+      }
+    </style>
+  </head>
+
+  <body>
+    <canvas id="canvas" width="600" height="600"></canvas>
+    <div class="info"><text id="text">0</text></div>
+    <script>
+      $.getJSON("./res/datas.json", function (datas) {
+        $.getJSON("./res/data.json", function (_data) {
+          datas.unshift(generatePresureData());
+          datas.unshift(generateMazeData());
+          datas.unshift(_data);
+
+          const dataMap = {};
+          const dataNames = [];
+          for (let i = 0; i < datas.length; i++) {
+            dataNames[i] = datas[i].name;
+            dataMap[datas[i].name] = datas[i];
+          }
+
+          function renderDataByName(name) {
+            if (name == "Floor") {
+              renderData(dataMap[name], 2, [190, 190]);
+            } else if (name == "Presure") {
+              renderData(dataMap[name], 2);
+            } else {
+              renderData(dataMap[name]);
+            }
+          }
+
+          renderDataByName("Floor");
+
+          const gui = new dat.GUI();
+          gui
+            .add({ data: "Floor" }, "data", dataNames)
+            .onChange(renderDataByName);
+        });
+      });
+
+      // Render data
+
+      const text = document.getElementById("text");
+
+      const canvas = document.getElementById("canvas");
+      const ctx = canvas.getContext("2d");
+
+      const width = canvas.width;
+      const height = canvas.height;
+
+      const resolution = [width, height];
+      let dataSize = null; // used to convert coords
+
+      function renderData(data, lineWidth = 4, size = [8, 8]) {
+        dataSize = size;
+
+        const name = data.name;
+        const points = data.points;
+        const edges = data.edges;
+
+        console.clear();
+
+        console.log(name, "--->");
+
+        console.time("DCEL Cost");
+        const dcel = new DCEL(points, edges);
+        const internalFaces = dcel.internalFaces();
+        console.timeEnd("DCEL Cost");
+
+        // console.log(internalFaces);
+
+        let flyWallCount = 0;
+        internalFaces.forEach(function (f) {
+          if (f.area === 0) {
+            flyWallCount++;
+          }
+          // console.log(f.vertexlist);
+        });
+
+        ctx.clearRect(0, 0, width, height);
+        drawFaces(internalFaces);
+        drawLines(points, edges, lineWidth);
+
+        text.innerText =
+          "Area count: " +
+          internalFaces.length +
+          "\n Fly Wall count: " +
+          flyWallCount +
+          "\n Area (>0) count: " +
+          (internalFaces.length - flyWallCount);
+      }
+
+      function drawFaces(faces) {
+        faces.forEach(function (f) {
+          const vertices = f.vertexlist;
+
+          const r = Math.floor(Math.random() * 200 + 50);
+          const g = Math.floor(Math.random() * 200 + 50);
+          const b = Math.floor(Math.random() * 200 + 50);
+
+          ctx.fillStyle = "rgba(" + r + "," + g + "," + b + ", 0.6)";
+          ctx.beginPath();
+
+          for (let i = 0; i < vertices.length; i++) {
+            const v = vertices[i];
+            const p = convertCoords([v.x, v.y]);
+            if (i == 0) {
+              ctx.moveTo(p[0], p[1]);
+            } else {
+              ctx.lineTo(p[0], p[1]);
+            }
+          }
+
+          ctx.closePath();
+          ctx.fill();
+        });
+      }
+
+      function drawLines(points, edges, lineWidth) {
+        ctx.lineWidth = lineWidth;
+        ctx.strokeStyle = "rgb(0,0,0)";
+
+        for (let i = 0; i < edges.length; i++) {
+          const e = edges[i];
+          const p1 = convertCoords(points[e[0]]);
+          const p2 = convertCoords(points[e[1]]);
+
+          ctx.beginPath();
+          ctx.moveTo(p1[0], p1[1]);
+          ctx.lineTo(p2[0], p2[1]);
+          ctx.closePath();
+          ctx.stroke();
+        }
+      }
+
+      function convertCoords(v) {
+        return [
+          Math.round((1 / 2 + v[0] / (dataSize[0] * 2)) * resolution[0]),
+          Math.round((1 / 2 - v[1] / (dataSize[1] * 2)) * resolution[1]),
+        ];
+      }
+
+      // Some data generators
+
+      function generateMazeData() {
+        const data = { name: "Maze", points: [], edges: [] };
+        const _size = 60;
+        for (let i = 0; i < _size; i++) {
+          for (let j = 0; j < _size; j++) {
+            const count = i * _size + j;
+            const offsetX = (i - _size / 2) * 0.2;
+            const offsetY = (j - _size / 2) * 0.2;
+            data.points.push([offsetX, offsetY]);
+          }
+        }
+        for (let i = 0; i < data.points.length; i++) {
+          const row = Math.floor(i / _size);
+          const col = i % _size;
+          const center = i;
+          if (row > 0) {
+            const _top = center - _size;
+            Math.random() > 0.3 && data.edges.push([center, _top]);
+          }
+          if (col > 0) {
+            const left = center - 1;
+            Math.random() > 0.3 && data.edges.push([center, left]);
+          }
+        }
+        return data;
+      }
+
+      function generatePresureData() {
+        const data = { name: "Presure", points: [], edges: [] };
+        const _size = 50;
+        for (let i = 0; i < _size; i++) {
+          for (let j = 0; j < _size; j++) {
+            const count = i * _size + j;
+            const offsetX = (i - _size / 2) * 0.3;
+            const offsetY = (j - _size / 2) * 0.3;
+            const scaler = 0.2;
+            data.points.push(
+              [0 * scaler + offsetX, 1 * scaler + offsetY],
+              [-0.5 * scaler + offsetX, 0 * scaler + offsetY],
+              [0.5 * scaler + offsetX, 0 * scaler + offsetY]
+            );
+            data.edges.push(
+              [0 + count * 3, 1 + count * 3],
+              [1 + count * 3, 2 + count * 3],
+              [2 + count * 3, 0 + count * 3]
+            );
+          }
+        }
+        return data;
+      }
+    </script>
+  </body>
+</html>

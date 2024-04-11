@@ -1,0 +1,6 @@
+build/
+docs/
+examples/libs/
+examples/res/
+
+package-lock.json

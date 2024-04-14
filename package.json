@@ -44,6 +44,6 @@
     "dev": "rollup -c -w",
     "build": "rollup -c",
     "test": "mocha",
-    "docs": "jsdoc --readme ./README.md ./src -r -d ./docs -c doc.config.json"
+    "doc": "jsdoc --readme ./README.md ./src -r -d ./docs -c doc.config.json"
   }
 }
